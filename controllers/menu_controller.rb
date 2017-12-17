@@ -1,7 +1,7 @@
 require_relative '../models/address_book'
 
 class MenuController
-  attr_reader :address_book
+  attr_accessor :address_book
 
   def initialize
     @address_book = AddressBook.new
@@ -13,7 +13,8 @@ class MenuController
     puts "2 - Create an entry"
     puts "3 - Search for an entry"
     puts "4 - Import entries from a CSV"
-    puts "5 - Exit"
+    puts "5 - Delete all entries"
+    puts "6 - Exit"
     print "Enter your selection: "
 
     selection = gets.to_i
@@ -36,6 +37,10 @@ class MenuController
         read_csv
         main_menu
       when 5
+        system "clear"
+        nuke
+        main_menu
+      when 6
         puts "Good-bye!"
         exit(0)
       else
@@ -44,6 +49,7 @@ class MenuController
         main_menu
     end
   end
+
   def view_all_entries
     address_book.entries.each do |entry|
        system "clear"
@@ -108,6 +114,11 @@ class MenuController
         puts entry.to_s
         search_submenu(entry)
     end
+  end
+
+  def nuke
+    @address_book.entries = []
+    puts "All entries destroyed!"
   end
 
   def read_csv
